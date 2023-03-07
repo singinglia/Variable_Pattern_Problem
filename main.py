@@ -1,5 +1,4 @@
 
-from DouglasFunctions import *
 from assembly import AvengersAssemble
 from data_generation import *
 
@@ -9,7 +8,7 @@ if __name__ == '__main__':
 
     num_strings = 5
     len_strings = 40
-    len_pattern = 4
+    len_pattern = 5
     num_patterns = 3
     pats = make_pat(num_patterns, len_pattern)  # make patterns list
     pats = list(pats)
@@ -23,4 +22,7 @@ if __name__ == '__main__':
         num_strings -= 1
 
 
-    bestPatternList = AvengersAssemble(df["String"].values, "WDWDWDW", .80, 4, t=100)
+    bestPatternList = AvengersAssemble(df["String"].values, "WDWDWDW", .7, 4, t=100)
+
+    print("Best Pattern List")
+    print(bestPatternList)

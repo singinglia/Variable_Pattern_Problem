@@ -93,12 +93,12 @@ def Search(I, part_index_list, Match, lmin):
     count = 0
     while count < 10000:
         lmin_rand = randint(lmin, len_part)
-        motifs = GibbsSampler(I, part_index_list, lmin_rand, len(I), min(len_part))
+        motifs = GibbsSampler(I, part_index_list, lmin_rand, len(I), len_part)
         ss = Score(I, motifs)
         if ss <= min_score:
             best_motifs = motifs
             min_score = ss
-            print(ss)
+            # print(ss)
             return best_motifs
             
             

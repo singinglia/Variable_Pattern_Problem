@@ -1,4 +1,4 @@
-from DouglasFunctions import *
+from helper_functions import *
 from Search import Search
 
 
@@ -19,9 +19,9 @@ def adjustIndexes(currIdxes, augment = None, shift = None):
 
 def AvengersAssemble(I, E, Match, lmin, jump=1, t=100):
     FAIL_MAX = 100
-    I_lens = [len(x) for x in I]
+    I_lens = [(0,len(x)) for x in I]
 
-    P = None
+    P = []
 
     currIndices = I_lens
     exDict = get_excluded_dic(E, lmin)
@@ -39,6 +39,7 @@ def AvengersAssemble(I, E, Match, lmin, jump=1, t=100):
                 break
 
             # The order of things here will depend on Bhavya's implementation
+            print(segments)
             possPattern = Search(I, segments, Match, lmin)
 
             if len(possPattern) == 0:
@@ -63,7 +64,4 @@ def AvengersAssemble(I, E, Match, lmin, jump=1, t=100):
             P = currPatternList
 
         # Alternatively, Store patterns to a library to be combined for the best possible pattern list
-    if P is None:
-        return "No Pattern List could be found."
-    else:
         return P
