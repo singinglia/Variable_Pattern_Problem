@@ -1,4 +1,6 @@
 from DouglasFunctions import *
+from Search import Search
+
 
 def scorePatternList(patternList):
     return len(patternList)
