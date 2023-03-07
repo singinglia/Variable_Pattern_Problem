@@ -57,7 +57,7 @@ def RandomMotif(seq, allowed_idx, k, prob_dic):
 def GibbsSampler(dna_list, part_index_list, k, t, N):
     motiff = []
     for i, (part_st, part_end) in enumerate(part_index_list):     
-        rand = randint(0, part_end - part_st - k)
+        rand = randint(part_st, part_end - k)
         motiff.append((rand, rand + k))      
         
     best_motif = motiff
