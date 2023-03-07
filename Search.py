@@ -17,12 +17,7 @@ def ProfileProb(seq, k, prob_dic):
 def Score(dna_list, motiff):
     st, end = motiff[0]
     k = end - st
-    score_mat = {"A": [0]*k, "C": [0]*k, "G": [0]*k, "T": [0]*k}
-    for indx, (st_nei,end_nei) in enumerate(motiff):
-        idx = 0
-        for nuc in str(dna_list[indx][st_nei:end_nei]):
-            score_mat[nuc][idx] +=1
-            idx+=1
+    score_mat = Profile_creator(dna_list, motiff)
     score = 0
     smat = list(zip(*score_mat.values()))
     for i in range(k):

@@ -1,4 +1,5 @@
 import random
+from collections import Counter
 random.seed(666, 2)
 
 def minmax(l):
