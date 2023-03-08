@@ -2,6 +2,38 @@ import random
 from collections import Counter
 random.seed(666, 2)
 
+def validate(I,E,match,lmin,answer):
+    ret = True
+    
+    #match criteria
+    for i in range(len(answer)):
+        cur = answer[i]
+        temp = [I[i][start:stop] for i,(start,stop) in enumerate(cur)]
+        med = median_string(I,cur)
+        cur_match = 1-max([hamming_distance(x,med)/len(med) for x in temp])>=match
+        if cur_match<match:
+            print("error, pattern {i} does not meet match criteria".format(i=i))
+            ret = False
+
+    #no overlap
+    prev = answer[i]
+    cur = answer[i+1]
+    for j in range(len(prev)):
+        gap = cur[j][0]-prev[j][1]
+        if gap<1:
+            print("error, patterns {i} and {k} do not meet gap criteria in string I[{j}]".format(i=i,j=j,k=i+1))
+            ret = False
+
+    #excluded criteria
+    excluded_dic = get_excluded_dic(E,lmin)
+    for i,cur in answer:
+        med = median_string(I,cur)
+        if is_excluded(cur,lmin,E,excluded_dic):
+            print("error, pattern {i} does not meet exclusion criteria")
+            ret = False
+    return ret
+
+
 def minmax(l):
     '''
     inputs:
@@ -113,28 +145,3 @@ def chop(I, index_list, lmin, factor = 2, exp = 4):
         a = random.choices(siz_range, map(lambda y: (len(x)-y)**exp, siz_range))[0]
         res.append((a,a+int(factor*lmin)))
     return res
-
-
-#this function is just a toy used to lazily generate inclusion/exclusion to get the other functions to compile
-#DO NOT ACTUALLY USE THIS LONG TERM; use Bhavya's so there are expected patterns within inclusion/exclusion
-def get_base_string(string_length, alphabet = 'ACGT'):
-    return ''.join(random.choices(alphabet, k=string_length))
-
-###############################
-# arbitrary inputs to compile #
-###############################
-
-I = [get_base_string(random.randint(100,1000)) for a in range(10)]
-E = [get_base_string(random.randint(100,1000)) for a in range(10)]
-match = 0.7
-lmin = min([20, len(min(inclusion, key = lambda x: len(x)))//6])
-
-################################
-# GLOBAL???                    #
-################################
-excluded_dic = get_excluded_dic(E,lmin)
-#could be implemented to call get_excluded_dic within the assemble function, then pass exclusion dic to other functions?
-#these functions are implemented this way so the dic gets passed around, but if you set it up as a global variable
-#     and remove it as an input parameter it should work fine
-#     --- in is_excluded remove the check if is None
-
