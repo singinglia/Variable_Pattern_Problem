@@ -2,6 +2,10 @@ import random
 from collections import Counter
 random.seed(666, 2)
 
+def hamming_distance(s1,s2):
+    assert len(s1)==len(s2), 'strings must be same length'
+    return sum([1 for i in range(len(s1)) if s1[i]!=s2[i]])
+
 def validate(I,E,match,lmin,answer):
     ret = True
     
@@ -83,7 +87,7 @@ def median_string(I, index_list):
     assert mm[0]==mm[1], 'error provided index_list must define equal length substrings of I'
     
 
-    patterns = [inclusion[i][start:stop] for i,(start,stop) in enumerate(index_list)]
+    patterns = [I[i][start:stop] for i,(start,stop) in enumerate(index_list)]
 
     return ''.join([Counter([x[i] for x in patterns]).most_common()[0][0] for i in range(len(patterns[0]))])
 
