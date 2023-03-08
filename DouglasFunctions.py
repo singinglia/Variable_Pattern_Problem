@@ -83,7 +83,7 @@ def median_string(I, index_list):
     assert mm[0]==mm[1], 'error provided index_list must define equal length substrings of I'
     
 
-    patterns = [inclusion[i][start:stop] for i,(start,stop) in enumerate(index_list)]
+    patterns = [I[i][start:stop] for i,(start,stop) in enumerate(index_list)]
 
     return ''.join([Counter([x[i] for x in patterns]).most_common()[0][0] for i in range(len(patterns[0]))])
 
