@@ -7,9 +7,9 @@ if __name__ == '__main__':
     df = pd.DataFrame(columns=["String", "Patterns", "Location", "Exclusion"])
 
     num_strings = 5
-    len_strings = 40
-    len_pattern = 5
-    num_patterns = 3
+    len_strings = 1000
+    len_pattern = 11
+    num_patterns = 7
     pats = make_pat(num_patterns, len_pattern)  # make patterns list
     pats = list(pats)
     while num_strings > 0:
@@ -21,8 +21,30 @@ if __name__ == '__main__':
         df = df.append(new_row, ignore_index=True)
         num_strings -= 1
 
+    inclusion = df["String"].values
+    exclusion = pats[2]
+    m = 1
+    l_min = len_pattern - 1
 
-    bestPatternList = AvengersAssemble(df["String"].values, "WDWDWDW", .7, 4, t=100)
+    bestPatternList, indexLists = AvengersAssemble(inclusion, "WVWVWVWVW", m, l_min, t=1000)
 
     print("Best Pattern List")
+    print(len(bestPatternList))
     print(bestPatternList)
+
+    bestPatternList, indexLists = AvengersAssemble(inclusion, exclusion, m, l_min, t=1000)
+
+
+    print("Exclusion")
+    print(exclusion)
+    print("Best Pattern List")
+    print(len(bestPatternList))
+    print(bestPatternList)
+
+    # print(inclusion)
+    # print(exclusion)
+    # print(m)
+    # print(l_min)
+    #
+    # print(indexLists)
+
