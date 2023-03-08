@@ -1,5 +1,7 @@
 from random import *
 import pandas as pd
+from collections import Counter
+
 
 def ProfileProb(seq, k, prob_dic):
     minn = 0
@@ -14,15 +16,17 @@ def ProfileProb(seq, k, prob_dic):
             min_pat = pat
     return min_pat
 
+def HammingDistance(s1,s2):
+    return sum([1 for i in range(len(s1)) if  s1[i]==s2[i]])
+
 def Score(dna_list, motiff):
     st, end = motiff[0]
     k = end - st
-    score_mat = Profile_creator(dna_list, motiff)
-    score = 0
-    smat = list(zip(*score_mat.values()))
-    for i in range(k):
-            score = score + sum(smat[i]) - max(smat[i])
-    return score
+    median_str =  median_string(dna_list, motiff)
+    score = []
+    for i, (mot_st, mot_end) in enumerate(motiff):
+            score.append(HammingDistance(median_str, dna_list[i][mot_st:mot_end]))
+    return 1 - (max(score)/k)
 
 def Profile_creator(dna_list, motiff):
     st, end = motiff[0]
@@ -68,9 +72,10 @@ def GibbsSampler(dna_list, part_index_list, k, t, N):
         ith_motif_st, ith_motif_end = RandomMotif(dna_list[i], part_index_list[i], k, prof)
 
         motiff = best_motif[:i] + [(ith_motif_st,ith_motif_end)] + best_motif[i+1:]
-        if Score(dna_list,motiff) < Score(dna_list,best_motif):
+        if Score(dna_list, motiff) < Score(dna_list,best_motif):
             best_motif = motiff.copy()
         return best_motif
+
 
 def Search(I, part_index_list, Match, lmin):
     """
@@ -83,23 +88,21 @@ def Search(I, part_index_list, Match, lmin):
     assert all([min(x)>=0 for x in part_index_list]), 'error provided index_list must not contain negative values'
     st0, end0 = part_index_list[0]
     len_part = end0-st0
-    best_motifs = []
-    min_score = Match*lmin
+    motifs = []
+    min_score = Match
     count = 0
     while count < 10000:
         lmin_rand = randint(lmin, len_part)
         motifs = GibbsSampler(I, part_index_list, lmin_rand, len(I), len_part)
         ss = Score(I, motifs)
-        if ss <= min_score:
-            best_motifs = motifs
-            min_score = ss
-            # print(ss)
-            return best_motifs
+        if ss >= min_score:
+            return motifs
             
             
         count += 1
 
-    # print(best_motifs)
+#     print(best_motifs)
     
     
-    return best_motifs
+    return motifs
+
