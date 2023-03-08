@@ -2,6 +2,10 @@ import random
 from collections import Counter
 random.seed(666, 2)
 
+def hamming_distance(s1,s2):
+    assert len(s1)==len(s2), 'strings must be same length'
+    return sum([1 for i in range(len(s1)) if s1[i]!=s2[i]])
+
 def validate(I,E,match,lmin,answer):
     ret = True
     
