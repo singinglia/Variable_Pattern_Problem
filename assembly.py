@@ -27,6 +27,7 @@ def AvengersAssemble(I, E, Match, lmin, jump=1, t=100):
     exDict = get_excluded_dic(E, lmin)
 
     for i in range(t):
+        print(i)
         currIndices = I_lens
         currPatternList = []
         patternIdxes = []
@@ -63,8 +64,7 @@ def AvengersAssemble(I, E, Match, lmin, jump=1, t=100):
                     patternIdxes.append(possPattern)
                     currIndices = adjustIndexes(currIndices, shift=possPattern)
         # print(i)
-        # print("Canidate List")
-        # print(currPatternList)
+        print("Canidate List Length", len(currPatternList))
 
         # Score Pattern List, if better than Max than new best
         if scorePatternList(currPatternList) > scorePatternList(P):

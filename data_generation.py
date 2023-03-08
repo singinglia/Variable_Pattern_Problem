@@ -18,7 +18,7 @@ def make_pat(num_patterns, len_pattern):
 def add_pats_to_str(pat, string, gap = 1):
     locs = np.random.choice(np.arange(0,len(string) - len(pat[0]), len(pat[0])+gap ), size=len(pat), replace=False)
     locs = sorted(locs)
-    print(locs)
+    # print(locs)
     for i in range(len(locs)):
         string = string[:locs[i]] + pat[i] + string[locs[i]+len(pat[i]):]
     return string, locs
