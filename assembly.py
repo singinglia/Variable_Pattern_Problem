@@ -1,4 +1,4 @@
-from helper_functions import *
+from DouglasFunctions import *
 from Search import Search
 
 
@@ -36,7 +36,7 @@ def AvengersAssemble(I, E, Match, lmin, jump=1, t=100):
         while True:
 
             try:
-                segments = chop(I, currIndices, lmin)
+                segments = chop(I, currIndices, lmin, factor=4)
             except:
                 break
 

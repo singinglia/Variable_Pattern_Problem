@@ -1,7 +1,9 @@
 
 from assembly import AvengersAssemble
 from data_generation import *
+from DouglasFunctions import validate
 import time
+from Search import Search
 
 if __name__ == '__main__':
 
@@ -24,16 +26,27 @@ if __name__ == '__main__':
 
     inclusion = df["String"].values
     exclusion = pats[2]
-    m = .8
+    m = .7
     l_min = len_pattern - 1
+    print(pats)
+    print(inclusion)
+
+    tuples = [(100,150)]*5
+    print(Search(inclusion, tuples, .9, 7))
+
     start = time.time()
-    bestPatternList, indexLists = AvengersAssemble(inclusion, "WVWVWVWVW", m, l_min, t=100, jump=5)
+    bestPatternList, indexLists = AvengersAssemble(inclusion, ["WVWVWVWVW"], m, l_min, t=10, jump=5)
     end = time.time()
 
     print("Run time:", end-start)
     print("Best Pattern List")
     print(len(bestPatternList))
     print(bestPatternList)
+    print(indexLists)
+
+    validate(inclusion, exclusion, m, l_min, indexLists)
+
+
 
     bestPatternList, indexLists = AvengersAssemble(inclusion, exclusion, m, l_min, t=100)
 
