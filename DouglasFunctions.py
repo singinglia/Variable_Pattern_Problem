@@ -1,6 +1,24 @@
 import random
 from collections import Counter
 random.seed(666, 2)
+import bisect
+
+def is_found(pi,sstarts):
+    pi = [0,1,2,3,4,5,6,7,8,9,10]
+    sstarts = [0,4,8,100]
+    
+    if len(pi)<len(sstarts):
+        return False
+
+    insert_points = [bisect.bisect_left(pi,x) for x in sstarts]
+    print(insert_points)
+    if len(set(insert_points))<len(insert_points):
+        return False
+    
+    if max(insert_points)>=len(pi):
+        return False
+    
+    return True
 
 def hamming_distance(s1,s2):
     assert len(s1)==len(s2), 'strings must be same length'
