@@ -16,8 +16,8 @@ def ProfileProb(seq, k, prob_dic):
             min_pat = pat
     return min_pat
 
-def HammingDistance(s1,s2):
-    return sum([1 for i in range(len(s1)) if  s1[i]==s2[i]])
+#def HammingDistance(s1,s2):
+#    return sum([1 for i in range(len(s1)) if  s1[i]==s2[i]])
 
 def Score(dna_list, motiff):
     st, end = motiff[0]
@@ -25,7 +25,7 @@ def Score(dna_list, motiff):
     median_str =  median_string(dna_list, motiff)
     score = []
     for i, (mot_st, mot_end) in enumerate(motiff):
-            score.append(HammingDistance(median_str, dna_list[i][mot_st:mot_end]))
+            score.append(hamming_distance(median_str, dna_list[i][mot_st:mot_end]))
     return 1 - (max(score)/k)
 
 def Profile_creator(dna_list, motiff):
@@ -84,25 +84,22 @@ def Search(I, part_index_list, Match, lmin):
     Match -> Minimum match Threshold
     lmin -> Minimum length of the motif
     """
-    
     assert all([min(x)>=0 for x in part_index_list]), 'error provided index_list must not contain negative values'
     st0, end0 = part_index_list[0]
     len_part = end0-st0
-    motifs = []
-    min_score = Match
+    best_motifs = []
+    min_score = 1 - Match
     count = 0
+    ctt = 0
     while count < 10000:
-        lmin_rand = randint(lmin, len_part)
-        motifs = GibbsSampler(I, part_index_list, lmin_rand, len(I), len_part)
-        ss = Score(I, motifs)
-        if ss >= min_score:
-            return motifs
-            
-            
+        lmin_rand = choices(list(range(len_pattern, len_part)), weights=1/np.arange(len_pattern, len_part)**3)[0]
+        while ctt < 10000:
+            motifs = GibbsSampler(I, part_index_list, lmin_rand, len(I), len_part)
+            ss = Score(I, motifs)
+            if ss <= min_score:
+                best_motifs = motifs
+                min_score = ss
+                return best_motifs   
+            ctt +=1
         count += 1
-
-#     print(best_motifs)
-    
-    
-    return motifs
-
+    return best_motifs
