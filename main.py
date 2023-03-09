@@ -31,7 +31,7 @@ if __name__ == '__main__':
     print(pats)
     print(inclusion)
 
-    tuples = [(100,150)]*5
+    tuples = [(100,150)]*5 
     print(Search(inclusion, tuples, .9, 7))
 
     start = time.time()
