@@ -21,7 +21,7 @@ if __name__ == '__main__':
         #     randomly choose the number of patters to be in this string
         #     np.random.randint(low=1, high=4, size=len_pattern)
         st = make_str_without_pats(pats, len_strings)  # create strings without pattern list
-        st, locs = add_pats_to_str(pats, st, num_muts)  # add patern list to string at random places with atleast 1 gap
+        st, locs = add_pats_to_str(pats, st, num_muts = int(num_muts))  # add patern list to string at random places with atleast 1 gap
         new_row = {"String": st, "Patterns": pats, "Location": locs}
         df = df.append(new_row, ignore_index=True)
         num_strings -= 1
