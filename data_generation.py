@@ -5,6 +5,12 @@ from random import *
 
 dict_nuc = {1:"A", 2:"T", 3:"C", 4:"G"}
 
+def random_mutate_pat(base_string, num_muts = 0):
+    mut_pos = [randint(0,len(base_string)-1) for _ in range(num_muts)]
+    new_string = list(base_string)
+    for x in mut_pos:
+        new_string[x] = choice(list(set(["A","C","G","T"])-set(new_string[x])))
+    return ''.join(new_string)
 
 def make_pat(num_patterns, len_pattern):
     set_pats = set()
@@ -15,15 +21,16 @@ def make_pat(num_patterns, len_pattern):
         set_pats.add(s_temp)
     return set_pats
 
-def add_pats_to_str(pat, string, gap = 1):
+def add_pats_to_str(pat, string, gap = 1, num_muts = 0):
     locs = np.random.choice(np.arange(0,len(string) - len(pat[0]), len(pat[0])+gap ), size=len(pat), replace=False)
     locs = sorted(locs)
-    # print(locs)
+#     print(locs)
     for i in range(len(locs)):
-        string = string[:locs[i]] + pat[i] + string[locs[i]+len(pat[i]):]
+#         random_mutate(, param)
+        string = string[:locs[i]] + random_mutate_pat(pat[i], num_muts) + string[locs[i]+len(pat[i]):]
     return string, locs
 
-def make_str_without_pats(pat, len_string):
+def make_str_without_pats(pat, len_string, num_muts = 0):
     string = ""
     dict_nuc = {1:"A", 2:"T", 3:"C", 4:"G"}
     s_temp = ''.join(pd.Series(np.random.randint(low=1, high=5, size=len_string)).map(dict_nuc).values)
