@@ -14,13 +14,14 @@ if __name__ == '__main__':
     len_strings = 150
     len_pattern = 7
     num_patterns = 5
+    num_muts = 0
     pats = make_pat(num_patterns, len_pattern)  # make patterns list
     pats = list(pats)
     while num_strings > 0:
         #     randomly choose the number of patters to be in this string
         #     np.random.randint(low=1, high=4, size=len_pattern)
         st = make_str_without_pats(pats, len_strings)  # create strings without pattern list
-        st, locs = add_pats_to_str(pats, st)  # add patern list to string at random places with atleast 1 gap
+        st, locs = add_pats_to_str(pats, st, num_muts)  # add patern list to string at random places with atleast 1 gap
         new_row = {"String": st, "Patterns": pats, "Location": locs}
         df = df.append(new_row, ignore_index=True)
         num_strings -= 1
