@@ -26,7 +26,7 @@ def Score(dna_list, motiff):
     score = []
     for i, (mot_st, mot_end) in enumerate(motiff):
             score.append(hamming_distance(median_str, dna_list[i][mot_st:mot_end]))
-    return 1 - (max(score)/k)
+    return 1 - (min(score)/k)
 
 def Profile_creator(dna_list, motiff):
     st, end = motiff[0]
