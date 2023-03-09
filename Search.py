@@ -16,8 +16,8 @@ def ProfileProb(seq, k, prob_dic):
             min_pat = pat
     return min_pat
 
-def HammingDistance(s1,s2):
-    return sum([1 for i in range(len(s1)) if  s1[i]==s2[i]])
+#def HammingDistance(s1,s2):
+#    return sum([1 for i in range(len(s1)) if  s1[i]==s2[i]])
 
 def Score(dna_list, motiff):
     st, end = motiff[0]
@@ -25,7 +25,7 @@ def Score(dna_list, motiff):
     median_str =  median_string(dna_list, motiff)
     score = []
     for i, (mot_st, mot_end) in enumerate(motiff):
-            score.append(HammingDistance(median_str, dna_list[i][mot_st:mot_end]))
+            score.append(hamming_distance(median_str, dna_list[i][mot_st:mot_end]))
     return 1 - (max(score)/k)
 
 def Profile_creator(dna_list, motiff):
