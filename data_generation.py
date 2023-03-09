@@ -11,7 +11,7 @@ def make_pat(num_patterns, len_pattern):
     dict_nuc = {1: "A", 2: "T", 3: "C", 4: "G"}
 
     while len(set_pats) != num_patterns:
-        s_temp = ''.join(pd.Series(np.random.randint(low=1, high=4, size=len_pattern)).map(dict_nuc).values)
+        s_temp = ''.join(pd.Series(np.random.randint(low=1, high=5, size=len_pattern)).map(dict_nuc).values)
         set_pats.add(s_temp)
     return set_pats
 
@@ -26,7 +26,7 @@ def add_pats_to_str(pat, string, gap = 1):
 def make_str_without_pats(pat, len_string):
     string = ""
     dict_nuc = {1:"A", 2:"T", 3:"C", 4:"G"}
-    s_temp = ''.join(pd.Series(np.random.randint(low=1, high=4, size=len_string)).map(dict_nuc).values)
+    s_temp = ''.join(pd.Series(np.random.randint(low=1, high=5, size=len_string)).map(dict_nuc).values)
     locs = [s_temp.find(x) for x in pat]
     locs = list(filter((-1).__ne__, locs)).copy()
     kkk = 2
