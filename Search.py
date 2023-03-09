@@ -74,7 +74,7 @@ def GibbsSampler(dna_list, part_index_list, k, t, N):
         motiff = best_motif[:i] + [(ith_motif_st,ith_motif_end)] + best_motif[i+1:]
         if Score(dna_list, motiff) < Score(dna_list,best_motif):
             best_motif = motiff.copy()
-        return best_motif
+    return best_motif
 
 
 def Search(I, part_index_list, Match, lmin):
