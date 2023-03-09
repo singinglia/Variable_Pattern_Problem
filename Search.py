@@ -26,7 +26,7 @@ def Score(dna_list, motiff):
     score = []
     for i, (mot_st, mot_end) in enumerate(motiff):
             score.append(hamming_distance(median_str, dna_list[i][mot_st:mot_end]))
-    return 1 - (max(score)/k)
+    return 1 - (min(score)/k)
 
 def Profile_creator(dna_list, motiff):
     st, end = motiff[0]
@@ -92,7 +92,7 @@ def Search(I, part_index_list, Match, lmin):
     count = 0
     ctt = 0
     while count < 10000:
-        lmin_rand = choices(list(range(len_pattern, len_part)), weights=1/np.arange(len_pattern, len_part)**3)[0]
+        lmin_rand = choices(list(range(lmin, len_part)), weights=1/np.arange(lmin, len_part)**3)[0]    
         while ctt < 10000:
             motifs = GibbsSampler(I, part_index_list, lmin_rand, len(I), len_part)
             ss = Score(I, motifs)
