@@ -4,9 +4,7 @@ random.seed(666, 2)
 import bisect
 
 def is_found(pi,sstarts):
-    pi = [0,1,2,3,4,5,6,7,8,9,10]
-    sstarts = [0,4,8,100]
-    
+ 
     if len(pi)<len(sstarts):
         return False
 
