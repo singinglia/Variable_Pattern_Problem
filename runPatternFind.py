@@ -1,5 +1,6 @@
 
 from BWT_assemble import YoungAvengersAssemble
+from DouglasFunctions import validate
 
 def readFile(testFile, incluLength=5):
     f = open(testFile, "r")
@@ -20,8 +21,7 @@ def readFile(testFile, incluLength=5):
     return testCases, answers
 
 
-if __name__ == '__main__':
-
+def runSmallTests():
     testcases, ans = readFile("Test one length 10 pattern.txt")
     exclusion = ["WVWVWVWVW", "XXXXXXXX"]
     l_min = 10
@@ -30,12 +30,37 @@ if __name__ == '__main__':
     # print(testcases[0])
     solutionList = []
     for test in testcases:
-        possPatterns = YoungAvengersAssemble(test, exclusion, m, l_min)
-        solutionList.append(possPatterns)
+        patterns, idxes = YoungAvengersAssemble(test, exclusion, m, l_min)
+        validate(test, exclusion, m, l_min, idxes)
 
-    print("Possible Patterns")
-    for s in solutionList:
-        print(s)
+
+
+
+def runLongTests():
+    testcases, ans = readFile("Test variable length 10 patterns.txt")
+    exclusion = ["WVWVWVWVW", "XXXXXXXX"]
+    l_min = 10
+    m = .9
+
+
+    for test in testcases:
+        patterns, idxes = YoungAvengersAssemble(test, exclusion, m, l_min)
+        print(patterns)
+        if not validate(test, exclusion, m, l_min, idxes):
+            print("Test not passed")
+
+    # print("DAG")
+    # for s in solutionList:
+    #     print(s)
+
+
+
+if __name__ == '__main__':
+    runLongTests()
+
+
+
+
 
     # start = time.time()
     # bestPatternList, indexLists = AvengersAssemble(testcases[1], exclusion, m, l_min)
