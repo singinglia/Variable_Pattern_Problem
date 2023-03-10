@@ -63,14 +63,15 @@ def hamming_distance(s1,s2):
     assert len(s1)==len(s2), 'strings must be same length'
     return sum([1 for i in range(len(s1)) if s1[i]!=s2[i]])
 
-def validate(I,E,match,lmin,answer):
+def validate(I,E,match,lmin,answer, ans_patterns):
     ret = True
     
     #match criteria
     for i in range(len(answer)):
         cur = answer[i]
         temp = [I[i][start:stop] for i,(start,stop) in enumerate(cur)]
-        med = median_string(I,cur)
+        med = ans_patterns[i]
+        # print(1-max([hamming_distance(x,med)/len(med) for x in temp]))
         cur_match = 1-max([hamming_distance(x,med)/len(med) for x in temp])>=match
         if cur_match<match:
             print("error, pattern {i} does not meet match criteria".format(i=i))
@@ -88,9 +89,8 @@ def validate(I,E,match,lmin,answer):
 
     #excluded criteria
     excluded_dic = get_excluded_dic(E,lmin)
-    for i,cur in answer:
-        med = median_string(I,cur)
-        if is_excluded(cur,lmin,E,excluded_dic):
+    for pat in ans_patterns:
+        if is_excluded(pat,lmin,E,excluded_dic):
             print("error, pattern {i} does not meet exclusion criteria")
             ret = False
     return ret

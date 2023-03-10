@@ -21,7 +21,8 @@ def isInAllInclusion(pi, sstarts):
 def BWTSearch(possPatterns, concatI, inclusionStarts, Match, lmin):
 
     bwtI = BWT(concatI)
-    d = lmin - int((Match)*lmin) + 1
+    # d = lmin - int((Match)*lmin) + 1
+    d = lmin - int((Match) * lmin)
     d = int(d)
     # print("d", d)
 

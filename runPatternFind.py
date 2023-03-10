@@ -25,7 +25,7 @@ def runSmallTests():
     testcases, ans = readFile("Test one length 10 pattern.txt")
     exclusion = ["WVWVWVWVW", "XXXXXXXX"]
     l_min = 10
-    m = .9
+    m = .8
 
     # print(testcases[0])
     solutionList = []
@@ -38,16 +38,19 @@ def runSmallTests():
 
 def runLongTests():
     testcases, ans = readFile("Test variable length 10 patterns.txt")
-    exclusion = ["WVWVWVWVW", "XXXXXXXX"]
+    exclusion = ["WVWVWVWVWVWVWVWVWVWVWVWVWVWV", "XXXXXXXXXXXXXXXXXXXXXXXX"]
     l_min = 10
-    m = .9
+    m = .8
 
-
+    passedCount = 0
     for test in testcases:
         patterns, idxes = YoungAvengersAssemble(test, exclusion, m, l_min)
-        print(patterns)
-        if not validate(test, exclusion, m, l_min, idxes):
+        # print(patterns)
+        if not validate(test, exclusion, m, l_min, idxes, patterns):
             print("Test not passed")
+        else:
+            passedCount += 1
+    print("Passed:", passedCount)
 
     # print("DAG")
     # for s in solutionList:
