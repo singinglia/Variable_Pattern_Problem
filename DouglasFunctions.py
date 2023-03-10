@@ -6,7 +6,37 @@ import networkx as nx
 from itertools import product
 from functools import reduce
 
+def validate(I,E,match,lmin,answer):
+    ret = True
+    
+    #match criteria
+    for i in range(len(answer)):
+        cur = answer[i]
+        temp = [I[i][start:stop] for i,(start,stop) in enumerate(cur)]
+        med = median_string(I,cur)
+        cur_match = 1-max([hamming_distance(x,med)/len(med) for x in temp])>=match
+        if cur_match<match:
+            print("error, pattern {i} does not meet match criteria".format(i=i))
+            ret = False
 
+    #no overlap
+    for i in range(len(answer)-1):
+        prev = answer[i]
+        cur = answer[i+1]
+        for j in range(len(prev)):
+            gap = cur[j][0]-prev[j][1]
+            if gap<1:
+                print("error, patterns {i} and {k} do not meet gap criteria in string I[{j}]".format(i=i,j=j,k=i+1))
+                ret = False
+
+    #excluded criteria
+    excluded_dic = get_excluded_dic(E,lmin)
+    for i,cur in answer:
+        med = median_string(I,cur)
+        if is_excluded(cur,lmin,E,excluded_dic):
+            print("error, pattern {i} does not meet exclusion criteria")
+            ret = False
+    return ret
 
 def get_pattern_list(sstarts,pattern_dic):
     
