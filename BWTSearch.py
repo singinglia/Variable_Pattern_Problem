@@ -1,16 +1,14 @@
-from helpers import *
+from BWT_helpers import *
 import bisect
-
+from BWT import *
 
 def isInAllInclusion(pi, sstarts):
-    pi = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-    sstarts = [0, 4, 8, 100]
 
     if len(pi) < len(sstarts):
         return False
 
     insert_points = [bisect.bisect_left(pi, x) for x in sstarts]
-    print(insert_points)
+    # print(insert_points)
     if len(set(insert_points)) < len(insert_points):
         return False
 
@@ -20,15 +18,19 @@ def isInAllInclusion(pi, sstarts):
     return True
 
 
-def BWTSearch(possPatterns, bwt, inclusionStarts, Match, lmin):
+def BWTSearch(possPatterns, concatI, inclusionStarts, Match, lmin):
 
-    d = int((1 -Match)*lmin)
+    bwtI = BWT(concatI)
+    d = lmin - int((Match)*lmin) + 1
+    d = int(d)
+    # print("d", d)
 
-    matchMap = getApproximatePatternLocations(bwt, possPatterns, d)
+    matchMap = getApproximatePatternLocations(bwtI, concatI, possPatterns, d)
 
     validMatches = {}
     for pattern in matchMap:
+        # print(pattern, ": ", len(matchMap[pattern]))
         if isInAllInclusion(matchMap[pattern], inclusionStarts):
             validMatches[pattern] = matchMap[pattern]
-
-    return
+    # print('Starts', inclusionStarts)
+    return validMatches

@@ -19,9 +19,8 @@ class BWT:
         word = self.betterBW_Transform(text)
 
         self.lastCol = [i for i in word]
-        self.firstCol = sorted(self.lastCol)
         self.firstSeen = self.buildFirstOccurances()
-        print(self.firstSeen)
+        # print(self.firstSeen)
 
         if C is None:
             C = int(len(word) * .05)
@@ -48,7 +47,8 @@ class BWT:
     def buildFirstOccurances(self):
         firstSeen = {}
         currLetter = None
-        for i, letter in enumerate(self.firstCol):
+        firstCol = sorted(self.lastCol)
+        for i, letter in enumerate(firstCol):
             if currLetter != letter:
                 firstSeen[letter] = i
                 currLetter = letter

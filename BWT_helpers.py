@@ -63,7 +63,7 @@ def BWMatchingRange(pattern, bwt):
             return top, bottom + 1
 
 
-def getApproximatePatternLocations(bwt, patterns, d):
+def getApproximatePatternLocations(bwt, text, patterns, d):
     matchLocations = {}
     for pattern in patterns:
         # Break into seeds
@@ -84,6 +84,8 @@ def getApproximatePatternLocations(bwt, patterns, d):
                     continue
                 possEnd = possStart + len(pattern)
                 if possEnd > len(text):
+                    continue
+                if possStart in validLocs:
                     continue
                 if isApproxMatch(pattern, text[possStart:possEnd], d):
                     validLocs.append(possStart)

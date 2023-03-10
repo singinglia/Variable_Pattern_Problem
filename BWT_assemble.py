@@ -1,5 +1,6 @@
 
 from BWTSearch import BWTSearch
+from DouglasFunctions import *
 
 
 def scorePatternList(patternList):
@@ -17,23 +18,23 @@ def concatInclusion(inList):
 
 def buildSearchList(firstString, lmin, exclusionMap, E):
     searchList = []
-    for i in range(len(firstString-lmin+1)):
+    lmin = int(lmin)
+    for i in range(len(firstString)-lmin+1):
         kmer = firstString[i:i+lmin]
-        if is_excluded(kmer, lmin, E, ex_dic=exclusionMap):
+        if not is_excluded(kmer, lmin, E, ex_dic=exclusionMap):
             searchList.append(kmer)
     return searchList
 
-def AvengersAssemble(I, E, Match, lmin):
+def YoungAvengersAssemble(I, E, Match, lmin):
     P = []
 
     ccI, posI = concatInclusion(I)
 
-    bwtI = BWT(ccI)
-
     exDict = get_excluded_dic(E, lmin)
 
     searchList = buildSearchList(I[0], lmin, exDict, E)
-    possPattern = BWTSearch(searchList, bwtI, posI, Match, lmin)
+    possPattern = BWTSearch(searchList, ccI, posI, Match, lmin)
+
 
 
     return possPattern
