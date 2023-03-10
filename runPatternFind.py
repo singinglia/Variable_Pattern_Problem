@@ -1,8 +1,10 @@
 
 from BWT_assemble import YoungAvengersAssemble
-from DouglasFunctions import validate
+from DouglasFunctions import validateBWT
+# from data_generation import genData
+from timing import *
 
-def readFile(testFile, incluLength=5):
+def readFile(testFile, incluLength=5, get=None):
     f = open(testFile, "r")
     testCases = []
     testSet = []
@@ -17,6 +19,10 @@ def readFile(testFile, incluLength=5):
         else:
             testSet.append(line.rstrip())
             count += 1
+        if get is not None:
+            if len(answers) > get:
+                f.close()
+                return testCases[get], answers[get]
     f.close()
     return testCases, answers
 
@@ -31,7 +37,7 @@ def runSmallTests():
     solutionList = []
     for test in testcases:
         patterns, idxes = YoungAvengersAssemble(test, exclusion, m, l_min)
-        validate(test, exclusion, m, l_min, idxes)
+        validateBWT(test, exclusion, m, l_min, idxes)
 
 
 
@@ -43,55 +49,48 @@ def runLongTests():
     m = .8
 
     passedCount = 0
-    for test in testcases:
+    start = time.time()
+    for i, test in enumerate(testcases):
         patterns, idxes = YoungAvengersAssemble(test, exclusion, m, l_min)
         # print(patterns)
-        if not validate(test, exclusion, m, l_min, idxes, patterns):
+        # print(i)
+        if not validateBWT(test, exclusion, m, l_min, idxes, patterns):
             print("Test not passed")
         else:
             passedCount += 1
     print("Passed:", passedCount)
+    end = time.time()
+    print("Run time:", end - start)
+
 
     # print("DAG")
     # for s in solutionList:
     #     print(s)
 
+def crazyDataRun():
+    test, ans = readFile("Test many variably lengthed patterns.txt", incluLength=50, get=1)
+    exclusion = ["WVWVWVWVWVWVWVWVWVWVWVWVWVWV", "XXXXXXXXXXXXXXXXXXXXXXXX"]
+    l_min = 15
+    m = .8
+
+    # start = time.time()
+    # print(time.asctime(time.localtime(time.time())))
+    # test = [x[:3000] for x in test]
+    patterns, idxes = YoungAvengersAssemble(test, exclusion, m, l_min)
+    # end = time.time()
+    # print("Run time:", end - start)
+
+    print("Patterns:")
+    print(len(patterns))
+    print(patterns)
+
+
 
 
 if __name__ == '__main__':
-    runLongTests()
+    # runLongTests()
+    crazyDataRun()
 
+    #genData(num_strings, len_strings, len_pattern, num_patterns, num_muts)
 
-
-
-
-    # start = time.time()
-    # bestPatternList, indexLists = AvengersAssemble(testcases[1], exclusion, m, l_min)
-    # end = time.time()
-    #
-    # print("Run time:", end-start)
-    # print("Best Pattern List")
-    # print(len(bestPatternList))
-    # print(bestPatternList)
-    # print(indexLists)
-    #
-    # validate(inclusion, exclusion, m, l_min, indexLists)
-    #
-    #
-    #
-    # bestPatternList, indexLists = AvengersAssemble(inclusion, exclusion, m, l_min, t=100)
-    #
-    #
-    # print("Exclusion")
-    # print(exclusion)
-    # print("Best Pattern List")
-    # print(len(bestPatternList))
-    # print(bestPatternList)
-
-    # print(inclusion)
-    # print(exclusion)
-    # print(m)
-    # print(l_min)
-    #
-    # print(indexLists)
 

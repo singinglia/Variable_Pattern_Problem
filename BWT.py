@@ -1,4 +1,5 @@
 import copy
+from pydivsufsort import divsufsort
 
 def getSuffixArray(word):
     suffixes = []
@@ -15,7 +16,8 @@ class BWT:
         if text[-1] != "$":
             text = text + "$"
 
-        self.suffixArray = getSuffixArray(text)
+        # self.suffixArray = getSuffixArray(text)
+        self.suffixArray = divsufsort(text)
         word = self.betterBW_Transform(text)
 
         self.lastCol = [i for i in word]

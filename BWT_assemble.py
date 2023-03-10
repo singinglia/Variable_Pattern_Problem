@@ -16,6 +16,14 @@ def concatInclusion(inList):
         text = text + i
     return text, startPos
 
+def getTotalConcatPos(inList):
+    start = 0
+    startPos = []
+    for i in inList:
+        startPos.append(start)
+        start += len(i)
+    return startPos
+
 def buildSearchList(firstString, lmin, exclusionMap, E):
     searchList = []
     lmin = int(lmin)
@@ -40,17 +48,73 @@ def toIndexLists(patternList, posI):
     return foundPatterns, allPatternIndexes
 
 
-def YoungAvengersAssemble(I, E, Match, lmin):
-    P = []
+def get_segments(pi, sstarts):
+    insertion_points = [bisect.bisect_left(pi, x) for x in sstarts] + [len(pi)]
 
-    ccI, posI = concatInclusion(I)
+    return [pi[insertion_points[i]:insertion_points[i + 1]] for i in range(len(sstarts))]
+
+def convertSegs(patternMap, start, partialPoss, totalPos):
+    convertPosMap = {}
+    #Get segment
+    for pattern in patternMap:
+        posList = []
+        groups = get_segments(patternMap[pattern], partialPoss)
+        for i, points in enumerate(groups):
+            adjustor = start+totalPos[i]-partialPoss[i]
+            posList.extend([x+adjustor for x in points])
+        convertPosMap[pattern] = posList
+        # finalGroups = get_segments(posList, totalPos)
+    return convertPosMap
+
+
+import math
+def YoungAvengersAssemble(I, E, Match, lmin):
+    iLen = len(I[0])
+    iLenList = [len(x) for x in I]
+    minLen = min(iLenList)
+    print(minLen)
+    SEG_LEN = 1000
 
     exDict = get_excluded_dic(E, lmin)
 
-    searchList = buildSearchList(I[0], lmin, exDict, E)
-    possPatternMap = BWTSearch(searchList, ccI, posI, Match, lmin)
-    bestPatternList = get_pattern_list(posI, possPatternMap)
 
+    if iLen > SEG_LEN:
+        posI = getTotalConcatPos(I)
+        possPatternMap = {}
+        for i in range(math.ceil(iLen/SEG_LEN)*2):
+            start = int(i*SEG_LEN/2)
+            print(start)
+            if start > minLen:
+                break
+            partialEnd = start+SEG_LEN
+            if partialEnd >= iLen:
+                partial = [x[start:] for x in I]
+            else:
+                partial = [x[start:partialEnd] for x in I]
+
+            ccI, partialPoss = concatInclusion(partial)
+
+            searchList = buildSearchList(partial[0], lmin, exDict, E)
+
+            segMap = BWTSearch(searchList, ccI, partialPoss, Match, lmin)
+            segMap = convertSegs(segMap, start, partialPoss, posI)
+            # print("Map Length:", len(segMap))
+            for key in segMap:
+                if key in possPatternMap:
+                    newList = list(set(possPatternMap[key] + segMap[key]))
+                    newList.sort()
+                    possPatternMap[key] = newList
+                else:
+                    possPatternMap[key] = segMap[key]
+            # print("Total Map Length:", len(possPatternMap))
+
+
+    else:
+        ccI, posI = concatInclusion(I)
+        searchList = buildSearchList(I[0], lmin, exDict, E)
+        possPatternMap = BWTSearch(searchList, ccI, posI, Match, lmin)
+
+    bestPatternList = get_pattern_list(posI, possPatternMap)
     patterns, idxes = toIndexLists(bestPatternList, posI)
 
     return patterns, idxes
