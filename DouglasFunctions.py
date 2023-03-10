@@ -63,7 +63,7 @@ def hamming_distance(s1,s2):
     assert len(s1)==len(s2), 'strings must be same length'
     return sum([1 for i in range(len(s1)) if s1[i]!=s2[i]])
 
-def validate(I,E,match,lmin,answer, ans_patterns):
+def validateBWT(I,E,match,lmin,answer, ans_patterns):
     ret = True
     
     #match criteria
@@ -85,6 +85,8 @@ def validate(I,E,match,lmin,answer, ans_patterns):
             gap = cur[j][0]-prev[j][1]
             if gap<1:
                 print("error, patterns {i} and {k} do not meet gap criteria in string I[{j}]".format(i=i,j=j,k=i+1))
+                print(answer[i])
+                print(answer[i+])
                 ret = False
 
     #excluded criteria
