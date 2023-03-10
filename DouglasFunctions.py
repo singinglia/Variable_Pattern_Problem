@@ -2,11 +2,50 @@ import random
 from collections import Counter
 random.seed(666, 2)
 import bisect
+import networkx as nx
+from itertools import product
+from functools import reduce
+
+
+
+def get_pattern_list(sstarts,pattern_dic):
+    
+    def get_groups(pi,sstarts):
+        insertion_points = [bisect.bisect_left(pi,x) for x in sstarts] + [len(pi)]
+
+        return [pi[insertion_points[i]:insertion_points[i+1]] for i in range(len(sstarts))]
+
+    def get_nodes(pi,sstarts,pattern):
+        temp =  product(*get_groups(pi,sstarts))
+        return [(*x,pattern) for x in temp]
+
+    def connect_nodes(graph):
+        for i in range(len(graph.nodes)):
+            for j in range(i+1,len(graph.nodes)):
+                n1 = list(graph.nodes)[i]
+                n2 = list(graph.nodes)[j]
+
+                if all([n1[i]+len(n1[-1])<n2[i] for i in range(len(n1)-1)]):
+                    graph.add_edge(n1,n2)
+                elif all([n1[i]>n2[i]+len(n2[-1]) for i in range(len(n1)-1)]):
+                    graph.add_edge(n1,n2)
+
+    def add_nodes(graph, pi,sstarts,pattern):
+        graph.add_nodes_from(get_nodes(pi,sstarts,pattern) )
+        
+    graph = nx.DiGraph()
+
+
+    for p in pattern_dic:
+        add_nodes(graph, pattern_dic[p], sstarts, p)
+
+
+    connect_nodes(graph)
+
+    return nx.dag_longest_path(graph)
 
 def is_found(pi,sstarts):
-    pi = [0,1,2,3,4,5,6,7,8,9,10]
-    sstarts = [0,4,8,100]
-    
+ 
     if len(pi)<len(sstarts):
         return False
 
