@@ -25,9 +25,9 @@ def get_pattern_list(sstarts,pattern_dic):
                 n1 = list(graph.nodes)[i]
                 n2 = list(graph.nodes)[j]
 
-                if all([n1[i]+len(n1[-1])<n2[i] for i in range(len(n1)-1)]):
+                if all([n1[i]+len(n1[-1])+1<n2[i] for i in range(len(n1)-1)]):
                     graph.add_edge(n1,n2)
-                elif all([n1[i]>n2[i]+len(n2[-1]) for i in range(len(n1)-1)]):
+                elif all([n1[i]>n2[i]+len(n2[-1])+1 for i in range(len(n1)-1)]):
                     graph.add_edge(n1,n2)
 
     def add_nodes(graph, pi,sstarts,pattern):
