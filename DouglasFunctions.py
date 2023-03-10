@@ -77,13 +77,14 @@ def validate(I,E,match,lmin,answer):
             ret = False
 
     #no overlap
-    prev = answer[i]
-    cur = answer[i+1]
-    for j in range(len(prev)):
-        gap = cur[j][0]-prev[j][1]
-        if gap<1:
-            print("error, patterns {i} and {k} do not meet gap criteria in string I[{j}]".format(i=i,j=j,k=i+1))
-            ret = False
+    for i in range(len(answer)-1):
+        prev = answer[i]
+        cur = answer[i+1]
+        for j in range(len(prev)):
+            gap = cur[j][0]-prev[j][1]
+            if gap<1:
+                print("error, patterns {i} and {k} do not meet gap criteria in string I[{j}]".format(i=i,j=j,k=i+1))
+                ret = False
 
     #excluded criteria
     excluded_dic = get_excluded_dic(E,lmin)
