@@ -68,17 +68,18 @@ def convertSegs(patternMap, start, partialPoss, totalPos):
 
 
 import math
-def YoungAvengersAssemble(I, E, Match, lmin):
+def YoungAvengersAssemble(I, E, Match, lmin, partition = True):
     iLen = len(I[0])
     iLenList = [len(x) for x in I]
     minLen = min(iLenList)
-    print(minLen)
+    # print("Length:", minLen)
+    # print("Expected Patterns:", math.floor(minLen/45))
     SEG_LEN = 1000
 
     exDict = get_excluded_dic(E, lmin)
 
 
-    if iLen > SEG_LEN:
+    if iLen > SEG_LEN and partition:
         posI = getTotalConcatPos(I)
         possPatternMap = {}
         for i in range(math.ceil(iLen/SEG_LEN)*2):
